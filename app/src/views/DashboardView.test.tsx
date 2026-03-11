@@ -13,7 +13,8 @@ describe('QA Checklist - Dashboard', () => {
 
   it('shows stat cards with non-zero numbers from seed data', () => {
     const mockNavigate = () => {}
-    render(<DashboardView onNavigate={mockNavigate} />)
+    const mockNavigateToProjects = () => {}
+    render(<DashboardView onNavigate={mockNavigate} onNavigateToProjects={mockNavigateToProjects} />)
     
     // Check that all stat cards are present and have values > 0
     expect(screen.getByText('Projects')).toBeInTheDocument()
@@ -24,7 +25,8 @@ describe('QA Checklist - Dashboard', () => {
 
   it('shows Blocked Tasks card in red when count > 0', () => {
     const mockNavigate = () => {}
-    render(<DashboardView onNavigate={mockNavigate} />)
+    const mockNavigateToProjects = () => {}
+    render(<DashboardView onNavigate={mockNavigate} onNavigateToProjects={mockNavigateToProjects} />)
     
     // Find the blocked tasks value - it should have text-destructive class when > 0
     const blockedTasksCard = screen.getByText('Blocked Tasks').closest('.border-l-4')
@@ -33,7 +35,8 @@ describe('QA Checklist - Dashboard', () => {
 
   it('shows Projects by Status panel with counts', () => {
     const mockNavigate = () => {}
-    render(<DashboardView onNavigate={mockNavigate} />)
+    const mockNavigateToProjects = () => {}
+    render(<DashboardView onNavigate={mockNavigate} onNavigateToProjects={mockNavigateToProjects} />)
     
     expect(screen.getByText('Projects by Status')).toBeInTheDocument()
     // Chart should be rendered
@@ -44,8 +47,9 @@ describe('QA Checklist - Dashboard', () => {
     const user = userEvent.setup()
     let navigatedTo = ''
     const mockNavigate = (view: string) => { navigatedTo = view }
+    const mockNavigateToProjects = () => {}
     
-    render(<DashboardView onNavigate={mockNavigate} />)
+    render(<DashboardView onNavigate={mockNavigate} onNavigateToProjects={mockNavigateToProjects} />)
     
     // Find the first "View all" button in Projects by Status section
     const viewAllButtons = screen.getAllByRole('button', { name: /view all/i })
@@ -56,14 +60,16 @@ describe('QA Checklist - Dashboard', () => {
 
   it('shows Dependency Blocks panel', () => {
     const mockNavigate = () => {}
-    render(<DashboardView onNavigate={mockNavigate} />)
+    const mockNavigateToProjects = () => {}
+    render(<DashboardView onNavigate={mockNavigate} onNavigateToProjects={mockNavigateToProjects} />)
     
     expect(screen.getByText('Dependency Blocks')).toBeInTheDocument()
   })
 
   it('shows blocked-by-dep tasks with orange badge or green message', () => {
     const mockNavigate = () => {}
-    render(<DashboardView onNavigate={mockNavigate} />)
+    const mockNavigateToProjects = () => {}
+    render(<DashboardView onNavigate={mockNavigate} onNavigateToProjects={mockNavigateToProjects} />)
     
     // Should show either blocked tasks or "No blocked tasks" message
     const hasBlockedTasks = screen.queryAllByText(/blocked by/i)
@@ -74,7 +80,8 @@ describe('QA Checklist - Dashboard', () => {
 
   it('shows Team Capacity panel with all seed members', () => {
     const mockNavigate = () => {}
-    render(<DashboardView onNavigate={mockNavigate} />)
+    const mockNavigateToProjects = () => {}
+    render(<DashboardView onNavigate={mockNavigate} onNavigateToProjects={mockNavigateToProjects} />)
     
     expect(screen.getByText('Team Capacity')).toBeInTheDocument()
     
@@ -85,7 +92,8 @@ describe('QA Checklist - Dashboard', () => {
 
   it('shows overallocated members with red badges at top', () => {
     const mockNavigate = () => {}
-    render(<DashboardView onNavigate={mockNavigate} />)
+    const mockNavigateToProjects = () => {}
+    render(<DashboardView onNavigate={mockNavigate} onNavigateToProjects={mockNavigateToProjects} />)
     
     // Ross and Phoebe should appear with overallocated badges
     expect(screen.getByText(/Ross Geller/i)).toBeInTheDocument()
@@ -98,7 +106,8 @@ describe('QA Checklist - Dashboard', () => {
 
   it('shows at-risk members with amber badges', () => {
     const mockNavigate = () => {}
-    render(<DashboardView onNavigate={mockNavigate} />)
+    const mockNavigateToProjects = () => {}
+    render(<DashboardView onNavigate={mockNavigate} onNavigateToProjects={mockNavigateToProjects} />)
     
     // Rachel and Monica should appear with at-risk badges
     expect(screen.getByText(/Rachel Green/i)).toBeInTheDocument()
@@ -114,8 +123,9 @@ describe('QA Checklist - Dashboard', () => {
     const user = userEvent.setup()
     let navigatedTo = ''
     const mockNavigate = (view: string) => { navigatedTo = view }
+    const mockNavigateToProjects = () => {}
     
-    render(<DashboardView onNavigate={mockNavigate} />)
+    render(<DashboardView onNavigate={mockNavigate} onNavigateToProjects={mockNavigateToProjects} />)
     
     const fullReportButton = screen.getByRole('button', { name: /full report/i })
     await user.click(fullReportButton)
@@ -125,7 +135,8 @@ describe('QA Checklist - Dashboard', () => {
 
   it('shows no write actions (read-only dashboard)', () => {
     const mockNavigate = () => {}
-    render(<DashboardView onNavigate={mockNavigate} />)
+    const mockNavigateToProjects = () => {}
+    render(<DashboardView onNavigate={mockNavigate} onNavigateToProjects={mockNavigateToProjects} />)
     
     // Dashboard should not have any edit, delete, or create buttons
     expect(screen.queryByRole('button', { name: /edit/i })).not.toBeInTheDocument()
