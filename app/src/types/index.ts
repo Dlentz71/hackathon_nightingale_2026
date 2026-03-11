@@ -18,6 +18,15 @@ export interface Project {
   updatedAt: string
 }
 
+export interface TaskNote {
+  id: string
+  taskId: string
+  content: string
+  createdBy: string
+  createdByName: string
+  createdAt: string
+}
+
 export interface Task {
   id: string
   projectId: string
@@ -28,6 +37,7 @@ export interface Task {
   priority: Priority
   assignmentIds: string[]
   dependencies: string[]
+  notes: TaskNote[]
   createdBy: string
   updatedBy: string
   createdAt: string

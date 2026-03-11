@@ -36,9 +36,9 @@ const DEFAULT_FORM = {
 }
 
 export function TaskDrawer({ open, onOpenChange, projectId, task }: TaskDrawerProps) {
-  const { addTask, updateTask, tasks: allTasks } = useProjectStore()
+  const { addTask, updateTask, addTaskNote, deleteTaskNote, tasks: allTasks } = useProjectStore()
   const { assignments, addAssignment, deleteAssignment } = useAssignmentStore()
-  const { teamMembers } = useTeamStore()
+  const { teamMembers, users } = useTeamStore()
   const currentUser = useAuthStore((s) => s.currentUser)
 
   const [form, setForm] = useState(DEFAULT_FORM)
@@ -50,8 +50,14 @@ export function TaskDrawer({ open, onOpenChange, projectId, task }: TaskDrawerPr
   const [newAssignHours, setNewAssignHours] = useState('')
   const [assignError, setAssignError] = useState('')
 
+  // Note form state
+  const [newNoteContent, setNewNoteContent] = useState('')
+
   const isEditing = !!task
   const canManage = can(currentUser, 'task:edit')
+
+  // Get the current task from store (to reflect real-time updates)
+  const currentTask = task ? allTasks.find(t => t.id === task.id) : null
 
   // Other tasks in same project (excluding this task)
   const siblingTasks = allTasks.filter(
@@ -59,8 +65,8 @@ export function TaskDrawer({ open, onOpenChange, projectId, task }: TaskDrawerPr
   )
 
   // Current assignments for this task
-  const taskAssignments = task
-    ? assignments.filter((a) => a.taskId === task.id)
+  const taskAssignments = currentTask
+    ? assignments.filter((a) => a.taskId === currentTask.id)
     : []
 
   // Team members not yet assigned to this task
@@ -131,6 +137,7 @@ export function TaskDrawer({ open, onOpenChange, projectId, task }: TaskDrawerPr
         priority: form.priority,
         dependencies: form.dependencies,
         assignmentIds: [],
+        notes: [],
         createdBy: currentUser.id,
         updatedBy: currentUser.id,
         createdAt: now,
@@ -176,6 +183,27 @@ export function TaskDrawer({ open, onOpenChange, projectId, task }: TaskDrawerPr
       updatedBy: currentUser?.id ?? '',
       updatedAt: new Date().toISOString(),
     })
+  }
+
+  function handleAddNote() {
+    if (!task || !currentUser || !newNoteContent.trim()) return
+    
+    const note = {
+      id: crypto.randomUUID(),
+      taskId: task.id,
+      content: newNoteContent.trim(),
+      createdBy: currentUser.id,
+      createdByName: currentUser.name,
+      createdAt: new Date().toISOString(),
+    }
+    
+    addTaskNote(task.id, note)
+    setNewNoteContent('')
+  }
+
+  function handleDeleteNote(noteId: string) {
+    if (!task) return
+    deleteTaskNote(task.id, noteId)
   }
 
   // Over-allocation warning for selected member
@@ -351,9 +379,9 @@ export function TaskDrawer({ open, onOpenChange, projectId, task }: TaskDrawerPr
             </form>
           </div>
 
-          {/* RIGHT column: assignments (edit mode only) */}
-          {isEditing && (
-            <div className="border-l pl-8">
+          {/* RIGHT column: assignments and notes (edit mode only) */}
+          {isEditing && task && (
+            <div className="border-l pl-8 space-y-6">
               <section aria-labelledby="assignments-heading">
                 <h3 id="assignments-heading" className="mb-4 text-sm font-semibold">Assignments</h3>
 
@@ -450,6 +478,69 @@ export function TaskDrawer({ open, onOpenChange, projectId, task }: TaskDrawerPr
 
                 {canManage && availableMembers.length === 0 && taskAssignments.length > 0 && (
                   <p className="text-xs text-muted-foreground">All team members are already assigned.</p>
+                )}
+              </section>
+
+              {/* Notes section */}
+              <section aria-labelledby="notes-heading" className="border-t pt-6">
+                <h3 id="notes-heading" className="mb-4 text-sm font-semibold">Notes</h3>
+
+                {/* Existing notes */}
+                {currentTask?.notes && currentTask.notes.length > 0 ? (
+                  <ul className="mb-4 space-y-3" aria-label="Task notes">
+                    {currentTask.notes.map((note) => (
+                      <li key={note.id} className="rounded-md border bg-muted/30 px-3 py-2">
+                        <div className="flex items-start justify-between gap-2 mb-1">
+                          <div className="flex-1">
+                            <span className="text-xs font-medium text-foreground">{note.createdByName}</span>
+                            <span className="text-xs text-muted-foreground ml-2">
+                              {new Date(note.createdAt).toLocaleDateString()} {new Date(note.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                            </span>
+                          </div>
+                          {canManage && note.createdBy === currentUser?.id && (
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="icon"
+                              className="h-6 w-6 text-muted-foreground hover:text-destructive"
+                              onClick={() => handleDeleteNote(note.id)}
+                              aria-label="Delete note"
+                            >
+                              <X className="h-3 w-3" aria-hidden="true" />
+                            </Button>
+                          )}
+                        </div>
+                        <p className="text-sm text-foreground whitespace-pre-wrap">{note.content}</p>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="mb-4 text-xs text-muted-foreground">No notes yet.</p>
+                )}
+
+                {/* Add note form */}
+                {canManage && (
+                  <div className="space-y-2">
+                    <Label htmlFor="new-note" className="sr-only">Add a note</Label>
+                    <Textarea
+                      id="new-note"
+                      placeholder="Add a note..."
+                      value={newNoteContent}
+                      onChange={(e) => setNewNoteContent(e.target.value)}
+                      rows={3}
+                      className="text-sm"
+                    />
+                    <div className="flex justify-end">
+                      <Button
+                        type="button"
+                        size="sm"
+                        onClick={handleAddNote}
+                        disabled={!newNoteContent.trim()}
+                      >
+                        Add Note
+                      </Button>
+                    </div>
+                  </div>
                 )}
               </section>
             </div>

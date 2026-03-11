@@ -15,9 +15,6 @@ const PERMISSIONS: Record<string, RbacAction[]> = {
     'user:manage',
   ],
   'team-member': [
-    'project:create',
-    'project:edit',
-    'project:delete',
     'task:create',
     'task:edit',
     'task:delete',

@@ -6,6 +6,7 @@ import { ProjectsView } from '@/views/ProjectsView'
 import { TeamView } from '@/views/TeamView'
 import { CapacityView } from '@/views/CapacityView'
 import { Separator } from '@/components/ui/separator'
+import type { TaskStatus } from '@/types'
 
 const VIEW_TITLES: Record<ViewId, string> = {
   dashboard: 'Dashboard',
@@ -16,6 +17,12 @@ const VIEW_TITLES: Record<ViewId, string> = {
 
 export default function App() {
   const [activeView, setActiveView] = useState<ViewId>('dashboard')
+  const [projectsTaskFilter, setProjectsTaskFilter] = useState<TaskStatus | undefined>(undefined)
+
+  function handleNavigateToProjects(filter?: TaskStatus) {
+    setActiveView('projects')
+    setProjectsTaskFilter(filter)
+  }
 
   return (
     <div className="flex h-screen overflow-hidden bg-background">
@@ -37,9 +44,9 @@ export default function App() {
           tabIndex={-1}
         >
           {activeView === 'dashboard' && (
-            <DashboardView onNavigate={setActiveView} />
+            <DashboardView onNavigate={setActiveView} onNavigateToProjects={handleNavigateToProjects} />
           )}
-          {activeView === 'projects' && <ProjectsView />}
+          {activeView === 'projects' && <ProjectsView initialTaskFilter={projectsTaskFilter} />}
           {activeView === 'team' && <TeamView />}
           {activeView === 'capacity' && <CapacityView />}
         </main>

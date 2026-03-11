@@ -22,10 +22,12 @@ interface ProjectCardProps {
   onEdit: (project: Project) => void
   onAddTask: (projectId: string) => void
   onEditTask: (task: Task) => void
+  initialExpanded?: boolean
+  taskStatusFilter?: string
 }
 
-export function ProjectCard({ project, onEdit, onAddTask, onEditTask }: ProjectCardProps) {
-  const [expanded, setExpanded] = useState(false)
+export function ProjectCard({ project, onEdit, onAddTask, onEditTask, initialExpanded = false, taskStatusFilter }: ProjectCardProps) {
+  const [expanded, setExpanded] = useState(initialExpanded)
   const [deleteOpen, setDeleteOpen] = useState(false)
   const [statusError, setStatusError] = useState<string | null>(null)
 
@@ -35,9 +37,10 @@ export function ProjectCard({ project, onEdit, onAddTask, onEditTask }: ProjectC
   const { assignments } = useAssignmentStore()
   const currentUser = useAuthStore((s) => s.currentUser)
 
-  const canEdit = can(currentUser, 'project:edit')
-  const canDelete = can(currentUser, 'project:delete')
+  const canEditProject = can(currentUser, 'project:edit')
+  const canDeleteProjectPerm = can(currentUser, 'project:delete')
   const canChangeStatus = can(currentUser, 'project:changeStatus')
+  const canEditTask = can(currentUser, 'task:edit')
   const canBulkDelete = can(currentUser, 'task:bulkDelete')
 
   const breakdown = getTaskStatusBreakdown(tasks)
@@ -86,7 +89,7 @@ export function ProjectCard({ project, onEdit, onAddTask, onEditTask }: ProjectC
 
             {/* Actions */}
             <div className="flex shrink-0 items-center gap-1">
-              {canEdit && (
+              {canEditProject && (
                 <Button
                   variant="ghost"
                   size="icon"
@@ -97,7 +100,7 @@ export function ProjectCard({ project, onEdit, onAddTask, onEditTask }: ProjectC
                   <Pencil className="h-3.5 w-3.5" aria-hidden="true" />
                 </Button>
               )}
-              {canDelete && (
+              {canDeleteProjectPerm && (
                 <Button
                   variant="ghost"
                   size="icon"
@@ -182,10 +185,11 @@ export function ProjectCard({ project, onEdit, onAddTask, onEditTask }: ProjectC
             <div id={`task-list-${project.id}`}>
               <TaskList
                 projectId={project.id}
-                canEdit={canEdit}
+                canEdit={canEditTask}
                 canBulkDelete={canBulkDelete}
                 onAddTask={() => onAddTask(project.id)}
                 onEditTask={onEditTask}
+                taskStatusFilter={taskStatusFilter}
               />
             </div>
           )}
