@@ -1,1 +1,0 @@
-# hackathon_nightingale_2026
