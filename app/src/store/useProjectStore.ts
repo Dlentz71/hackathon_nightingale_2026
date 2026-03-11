@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import type { Project, Task } from '@/types'
+import type { Project, Task, TaskNote } from '@/types'
 
 interface ProjectState {
   projects: Project[]
@@ -14,6 +14,8 @@ interface ProjectState {
   updateTask: (id: string, updates: Partial<Task>) => void
   deleteTask: (id: string) => void
   bulkDeleteTasks: (ids: string[]) => void
+  addTaskNote: (taskId: string, note: TaskNote) => void
+  deleteTaskNote: (taskId: string, noteId: string) => void
 }
 
 export const useProjectStore = create<ProjectState>()(
@@ -59,6 +61,24 @@ export const useProjectStore = create<ProjectState>()(
       bulkDeleteTasks: (ids) =>
         set((state) => ({
           tasks: state.tasks.filter((t) => !ids.includes(t.id)),
+        })),
+
+      addTaskNote: (taskId, note) =>
+        set((state) => ({
+          tasks: state.tasks.map((t) =>
+            t.id === taskId
+              ? { ...t, notes: [...(t.notes || []), note] }
+              : t
+          ),
+        })),
+
+      deleteTaskNote: (taskId, noteId) =>
+        set((state) => ({
+          tasks: state.tasks.map((t) =>
+            t.id === taskId
+              ? { ...t, notes: (t.notes || []).filter((n) => n.id !== noteId) }
+              : t
+          ),
         })),
     }),
     { name: 'capacity-planner-projects' },

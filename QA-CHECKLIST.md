@@ -27,6 +27,14 @@
 
 - [ ] **Stat cards** (top row): Projects · Tasks · Open Tasks · Blocked Tasks all show non-zero numbers from seed data
 - [ ] "Blocked Tasks" card is **red** when count > 0 (seed has at least one `blocked`-status task)
+- [ ] **Stat cards are clickable**: hover shows shadow effect, cursor changes to pointer
+- [ ] Clicking "Projects" card navigates to Projects view (no filter)
+- [ ] Clicking "Tasks" card navigates to Projects view with "To Do" filter pre-selected
+- [ ] Clicking "Open Tasks" card navigates to Projects view with "In Progress" filter pre-selected
+- [ ] Clicking "Blocked Tasks" card navigates to Projects view with "Blocked" filter pre-selected
+- [ ] When navigating from dashboard card, Task Status dropdown shows the selected filter
+- [ ] When navigating from dashboard card, projects are auto-expanded showing tasks
+- [ ] When navigating from dashboard card, only tasks matching the filter are visible within projects
 - [ ] **Projects by Status** panel lists statuses with their counts (Inflight, Pending, Planning, etc.)
 - [ ] "View all" link navigates to Projects tab
 - [ ] **Dependency Blocks** panel lists tasks that have unmet dependencies (not the same as `blocked` status)
@@ -46,7 +54,13 @@
 
 ### Filters & Sort
 - [ ] All 3 seed projects appear in the grid on load
-- [ ] **Filter by Status** dropdown narrows visible projects correctly
+- [ ] **Filter by Project Status** dropdown narrows visible projects correctly
+- [ ] **Filter by Task Status** dropdown filters projects that contain tasks with that status
+- [ ] Task Status filter: selecting "Blocked" shows only projects with blocked tasks
+- [ ] Task Status filter: selecting "In Progress" shows only projects with in-progress tasks
+- [ ] Task Status filter: when active, projects auto-expand showing their tasks
+- [ ] Task Status filter: when active, only tasks matching the filter are visible within projects
+- [ ] Task Status filter: can be combined with Project Status and Priority filters
 - [ ] **Filter by Priority** dropdown narrows visible projects correctly
 - [ ] **Sort** by Name / Start Date / Priority toggles asc/desc on each click
 - [ ] Clearing filters restores all projects
@@ -111,8 +125,18 @@
 
 ### Edit Task (admin / team-member)
 - [ ] Edit button opens drawer pre-filled
+- [ ] **Notes section** appears in task drawer with list of existing notes
+- [ ] Each note shows: author name, timestamp, note text, and delete button (if user is author)
+- [ ] Users can only delete their own notes (delete button hidden for others' notes)
+- [ ] Add note: text area + "Add Note" button
+- [ ] Adding empty note shows validation error
+- [ ] Valid note: appears in list immediately with author name and timestamp
+- [ ] Notes persist after closing and reopening drawer
 - [ ] Assignments section appears (edit mode only)
 - [ ] All fields editable; changes persist on save
+- [ ] Team members can edit all task fields (name, description, status, priority, etc.)
+- [ ] Team members can add/remove assignments
+- [ ] Team members can add/delete notes
 - [ ] Viewer: no edit button visible
 
 ### Delete Task (admin / team-member)

@@ -37,7 +37,7 @@ export function UserSwitcher() {
         }}
       >
         <SelectTrigger
-          className="h-8 w-auto gap-2 border-0 bg-transparent px-2 text-sm shadow-none focus:ring-1"
+          className="h-8 w-auto gap-2 border-0 bg-transparent px-2 text-sm shadow-none focus:ring-1 [&>svg]:hidden"
           aria-label="Switch active user"
         >
           <User className="h-3.5 w-3.5 text-muted-foreground" aria-hidden="true" />

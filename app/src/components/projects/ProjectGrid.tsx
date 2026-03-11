@@ -5,6 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { ProjectCard } from './ProjectCard'
 import { can } from '@/lib/rbac'
 import { useAuthStore } from '@/store/useAuthStore'
+import { useProjectStore } from '@/store/useProjectStore'
 import { PRIORITY_ORDER } from '@/lib/constants'
 import type { Project, Task, ProjectStatus, Priority } from '@/types'
 
@@ -19,6 +20,8 @@ interface ProjectGridProps {
   onEditProject: (project: Project) => void
   onAddTask: (projectId: string) => void
   onEditTask: (task: Task) => void
+  expandAll?: boolean
+  taskStatusFilter?: string
 }
 
 export function ProjectGrid({
@@ -27,18 +30,27 @@ export function ProjectGrid({
   onEditProject,
   onAddTask,
   onEditTask,
+  expandAll = false,
+  taskStatusFilter,
 }: ProjectGridProps) {
   const currentUser = useAuthStore((s) => s.currentUser)
   const canCreate = can(currentUser, 'project:create')
+  const { tasks } = useProjectStore()
 
   const [statusFilter, setStatusFilter] = useState<ProjectStatus | typeof ALL_VALUE>(ALL_VALUE)
   const [priorityFilter, setPriorityFilter] = useState<Priority | typeof ALL_VALUE>(ALL_VALUE)
+  const [taskFilter, setTaskFilter] = useState<string>(taskStatusFilter || ALL_VALUE)
   const [sortField, setSortField] = useState<SortField>('startDate')
   const [sortDir, setSortDir] = useState<SortDir>('desc')
 
   const filtered = projects
     .filter((p) => statusFilter === ALL_VALUE || p.status === statusFilter)
     .filter((p) => priorityFilter === ALL_VALUE || p.priority === priorityFilter)
+    .filter((p) => {
+      // Filter by task status
+      if (taskFilter === ALL_VALUE) return true
+      return tasks.some(t => t.projectId === p.id && t.status === taskFilter)
+    })
     .sort((a, b) => {
       let cmp = 0
       if (sortField === 'name') cmp = a.name.localeCompare(b.name)
@@ -57,11 +69,11 @@ export function ProjectGrid({
       {/* Toolbar */}
       <div className="flex flex-wrap items-center gap-2">
         <Select value={statusFilter} onValueChange={(v) => setStatusFilter(v as ProjectStatus | typeof ALL_VALUE)}>
-          <SelectTrigger className="h-8 w-40 text-sm" aria-label="Filter by status">
-            <SelectValue placeholder="All statuses" />
+          <SelectTrigger className="h-8 w-48 text-sm" aria-label="Filter by project status">
+            <SelectValue placeholder="Project Status" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value={ALL_VALUE}>All statuses</SelectItem>
+            <SelectItem value={ALL_VALUE}>All Project Statuses</SelectItem>
             <SelectItem value="planning">Planning</SelectItem>
             <SelectItem value="pending">Pending</SelectItem>
             <SelectItem value="inflight">Inflight</SelectItem>
@@ -70,12 +82,25 @@ export function ProjectGrid({
           </SelectContent>
         </Select>
 
-        <Select value={priorityFilter} onValueChange={(v) => setPriorityFilter(v as Priority | typeof ALL_VALUE)}>
-          <SelectTrigger className="h-8 w-40 text-sm" aria-label="Filter by priority">
-            <SelectValue placeholder="All priorities" />
+        <Select value={taskFilter} onValueChange={setTaskFilter}>
+          <SelectTrigger className="h-8 w-48 text-sm" aria-label="Filter by task status">
+            <SelectValue placeholder="Task Status" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value={ALL_VALUE}>All priorities</SelectItem>
+            <SelectItem value={ALL_VALUE}>All Task Statuses</SelectItem>
+            <SelectItem value="todo">To Do</SelectItem>
+            <SelectItem value="in-progress">In Progress</SelectItem>
+            <SelectItem value="blocked">Blocked</SelectItem>
+            <SelectItem value="done">Done</SelectItem>
+          </SelectContent>
+        </Select>
+
+        <Select value={priorityFilter} onValueChange={(v) => setPriorityFilter(v as Priority | typeof ALL_VALUE)}>
+          <SelectTrigger className="h-8 w-40 text-sm" aria-label="Filter by priority">
+            <SelectValue placeholder="Priority" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value={ALL_VALUE}>All Priorities</SelectItem>
             <SelectItem value="high">High</SelectItem>
             <SelectItem value="medium">Medium</SelectItem>
             <SelectItem value="low">Low</SelectItem>
@@ -138,6 +163,8 @@ export function ProjectGrid({
               onEdit={onEditProject}
               onAddTask={onAddTask}
               onEditTask={onEditTask}
+              initialExpanded={expandAll}
+              taskStatusFilter={taskFilter !== ALL_VALUE ? taskFilter : undefined}
             />
           ))}
         </div>

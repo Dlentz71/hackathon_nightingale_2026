@@ -10,10 +10,11 @@ import { useAssignmentStore } from '@/store/useAssignmentStore'
 import { getMemberUtilization } from '@/lib/capacity'
 import { getUnmetDependencies } from '@/lib/projectRules'
 import { UTILIZATION_HEALTHY, UTILIZATION_AT_RISK, PROJECT_STATUS_LABELS } from '@/lib/constants'
-import type { ProjectStatus } from '@/types'
+import type { ProjectStatus, TaskStatus } from '@/types'
 
 interface DashboardViewProps {
   onNavigate: (view: 'projects' | 'team' | 'capacity') => void
+  onNavigateToProjects: (filter?: TaskStatus) => void
 }
 
 // ─── Status color map ─────────────────────────────────────────────────────────
@@ -28,9 +29,15 @@ const STATUS_COLORS: Record<string, string> = {
 
 // ─── Summary stat card ────────────────────────────────────────────────────────
 
-function StatCard({ title, value, color = 'gray', danger }: { title: string; value: number; color?: string; danger?: boolean }) {
+function StatCard({ title, value, color = 'gray', danger, onClick }: { title: string; value: number; color?: string; danger?: boolean; onClick?: () => void }) {
+  const CardComponent = onClick ? 'button' : 'div'
   return (
-    <Card className={`border-l-4 ${color}`}>
+    <Card 
+      className={`border-l-4 ${color} ${onClick ? 'cursor-pointer transition-shadow hover:shadow-md' : ''}`}
+      onClick={onClick}
+      role={onClick ? 'button' : undefined}
+      tabIndex={onClick ? 0 : undefined}
+    >
       <CardHeader className="pb-1">
         <CardTitle className="text-sm font-medium text-muted-foreground">{title}</CardTitle>
       </CardHeader>
@@ -71,7 +78,7 @@ function UtilBadge({ ratio }: { ratio: number }) {
 
 // ─── Main view ────────────────────────────────────────────────────────────────
 
-export function DashboardView({ onNavigate }: DashboardViewProps) {
+export function DashboardView({ onNavigate, onNavigateToProjects }: DashboardViewProps) {
   const { projects, tasks } = useProjectStore()
   const { teamMembers } = useTeamStore()
   const { assignments } = useAssignmentStore()
@@ -107,10 +114,31 @@ export function DashboardView({ onNavigate }: DashboardViewProps) {
     <div className="flex flex-col gap-6">
       {/* Summary stat cards */}
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-        <StatCard title="Projects" value={projects.length} color="border-l-indigo-500" />
-        <StatCard title="Tasks" value={tasks.length} color="border-l-violet-500" />
-        <StatCard title="Open Tasks" value={openTasks} color="border-l-amber-500" />
-        <StatCard title="Blocked Tasks" value={blockedStatusTasks} color={blockedStatusTasks > 0 ? "border-l-red-500" : "border-l-gray-300"} danger={blockedStatusTasks > 0} />
+        <StatCard 
+          title="Projects" 
+          value={projects.length} 
+          color="border-l-indigo-500" 
+          onClick={() => onNavigateToProjects()}
+        />
+        <StatCard 
+          title="Tasks" 
+          value={tasks.length} 
+          color="border-l-violet-500" 
+          onClick={() => onNavigateToProjects('todo')}
+        />
+        <StatCard 
+          title="Open Tasks" 
+          value={openTasks} 
+          color="border-l-amber-500" 
+          onClick={() => onNavigateToProjects('in-progress')}
+        />
+        <StatCard 
+          title="Blocked Tasks" 
+          value={blockedStatusTasks} 
+          color={blockedStatusTasks > 0 ? "border-l-red-500" : "border-l-gray-300"} 
+          danger={blockedStatusTasks > 0}
+          onClick={() => onNavigateToProjects('blocked')}
+        />
       </div>
 
       {/* Two-column content grid */}

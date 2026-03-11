@@ -19,9 +19,10 @@ interface TaskListProps {
   canBulkDelete: boolean
   onAddTask: () => void
   onEditTask: (task: Task) => void
+  taskStatusFilter?: string
 }
 
-export function TaskList({ projectId, canEdit, canBulkDelete, onAddTask, onEditTask }: TaskListProps) {
+export function TaskList({ projectId, canEdit, canBulkDelete, onAddTask, onEditTask, taskStatusFilter }: TaskListProps) {
   const allTasks = useProjectStore((s) => s.tasks)
   const { deleteTask, bulkDeleteTasks } = useProjectStore()
   const { assignments } = useAssignmentStore()
@@ -40,7 +41,8 @@ export function TaskList({ projectId, canEdit, canBulkDelete, onAddTask, onEditT
     const matchesSearch = t.name.toLowerCase().includes(search.toLowerCase())
     const matchesStatus = statusFilter === ALL_VALUE || t.status === statusFilter
     const matchesPriority = priorityFilter === ALL_VALUE || t.priority === priorityFilter
-    return matchesSearch && matchesStatus && matchesPriority
+    const matchesGlobalFilter = !taskStatusFilter || taskStatusFilter === ALL_VALUE || t.status === taskStatusFilter
+    return matchesSearch && matchesStatus && matchesPriority && matchesGlobalFilter
   })
 
   function handleDeleteTask(task: Task) {

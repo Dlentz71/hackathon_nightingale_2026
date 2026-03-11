@@ -3,10 +3,14 @@ import { ProjectGrid } from '@/components/projects/ProjectGrid'
 import { ProjectDrawer } from '@/components/projects/ProjectDrawer'
 import { TaskDrawer } from '@/components/projects/TaskDrawer'
 import { useProjectStore } from '@/store/useProjectStore'
-import type { Project, Task } from '@/types'
+import type { Project, Task, TaskStatus } from '@/types'
 
-export function ProjectsView() {
-  const projects = useProjectStore((s) => s.projects)
+interface ProjectsViewProps {
+  initialTaskFilter?: TaskStatus
+}
+
+export function ProjectsView({ initialTaskFilter }: ProjectsViewProps) {
+  const { projects } = useProjectStore()
 
   const [projectDrawerOpen, setProjectDrawerOpen] = useState(false)
   const [editingProject, setEditingProject] = useState<Project | null>(null)
@@ -45,6 +49,8 @@ export function ProjectsView() {
         onEditProject={handleEditProject}
         onAddTask={handleAddTask}
         onEditTask={handleEditTask}
+        taskStatusFilter={initialTaskFilter}
+        expandAll={!!initialTaskFilter}
       />
 
       <ProjectDrawer
