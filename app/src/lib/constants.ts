@@ -45,7 +45,7 @@ export const PROJECT_STATUS_ORDER: Record<ProjectStatus, number> = {
   completed: 4,
 }
 
-export const QUARTER_WEEKS = 6
+export const QUARTER_WEEKS = 13
 export const OVERALLOCATION_THRESHOLD = 1.0
 
 export const UTILIZATION_HEALTHY = 0.9   // < 90 % → green
