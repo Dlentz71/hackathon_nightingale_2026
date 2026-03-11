@@ -1,0 +1,594 @@
+{
+  "_meta": {
+    "description": "Seed data for IT Capacity Planning Tool – Friends cast as IT team",
+    "generatedDate": "2026-03-11",
+    "referenceWindow": {
+      "label": "Q1 2026 (6-week active window)",
+      "weeks": 6,
+      "note": "Utilization = total assigned hours / (hoursPerWeek × 6 weeks)"
+    },
+    "tshirtMap": { "S": 4, "M": 8, "L": 16, "XL": 32, "XXL": 40 },
+    "expectedUtilization": {
+      "tm1": { "name": "Gunter",   "pct": 87,  "status": "healthy" },
+      "tm2": { "name": "Ross",     "pct": 119, "status": "overallocated" },
+      "tm3": { "name": "Rachel",   "pct": 93,  "status": "healthy" },
+      "tm4": { "name": "Monica",   "pct": 97,  "status": "healthy" },
+      "tm5": { "name": "Chandler", "pct": 68,  "status": "healthy" },
+      "tm6": { "name": "Joey",     "pct": 71,  "status": "healthy" },
+      "tm7": { "name": "Phoebe",   "pct": 114, "status": "overallocated" }
+    }
+  },
+
+  "users": [
+    { "id": "u1", "name": "Gunter",        "email": "gunter@friends.it",  "role": "admin",   "teamMemberId": "tm1" },
+    { "id": "u2", "name": "Ross Geller",   "email": "ross@friends.it",    "role": "team-member", "teamMemberId": "tm2" },
+    { "id": "u3", "name": "Rachel Green",  "email": "rachel@friends.it",  "role": "team-member", "teamMemberId": "tm3" },
+    { "id": "u4", "name": "Monica Geller", "email": "monica@friends.it",  "role": "team-member", "teamMemberId": "tm4" },
+    { "id": "u5", "name": "Chandler Bing", "email": "chandler@friends.it","role": "viewer",  "teamMemberId": "tm5" },
+    { "id": "u6", "name": "Joey Tribbiani","email": "joey@friends.it",    "role": "viewer",  "teamMemberId": "tm6" },
+    { "id": "u7", "name": "Phoebe Buffay", "email": "phoebe@friends.it",  "role": "viewer",  "teamMemberId": "tm7" }
+  ],
+
+  "teamMembers": [
+    { "id": "tm1", "name": "Gunter",        "role": "IT Manager",              "hoursPerWeek": 20 },
+    { "id": "tm2", "name": "Ross Geller",   "role": "Senior Backend Engineer", "hoursPerWeek": 40 },
+    { "id": "tm3", "name": "Rachel Green",  "role": "Frontend Engineer",       "hoursPerWeek": 40 },
+    { "id": "tm4", "name": "Monica Geller", "role": "DevOps Engineer",         "hoursPerWeek": 40 },
+    { "id": "tm5", "name": "Chandler Bing", "role": "Data Analyst",            "hoursPerWeek": 40 },
+    { "id": "tm6", "name": "Joey Tribbiani","role": "QA Engineer",             "hoursPerWeek": 32 },
+    { "id": "tm7", "name": "Phoebe Buffay", "role": "UX Designer",             "hoursPerWeek": 32 }
+  ],
+
+  "projects": [
+    {
+      "id": "p1",
+      "name": "Central Perk Digital Transformation",
+      "description": "Modernize Central Perk's ordering, loyalty program, and analytics with a full-stack web application.",
+      "startDate": "2026-01-06",
+      "status": "active"
+    },
+    {
+      "id": "p2",
+      "name": "Apartment Building Security Platform",
+      "description": "Deploy a comprehensive access control and security monitoring system for the Bedford Street apartment complex.",
+      "startDate": "2026-02-02",
+      "status": "active"
+    },
+    {
+      "id": "p3",
+      "name": "Tribbiani Talent Management System",
+      "description": "Build an internal talent management, performance review, and goal-tracking system for HR operations.",
+      "startDate": "2026-03-02",
+      "status": "active"
+    }
+  ],
+
+  "tasks": [
+    {
+      "id": "p1t1", "projectId": "p1",
+      "name": "Requirements & Stakeholder Workshop",
+      "description": "Facilitate workshops with Central Perk stakeholders to capture business requirements and success criteria.",
+      "estimate": { "size": "M", "hours": 8 },
+      "assignmentIds": ["a-p1t1-tm1", "a-p1t1-tm2"],
+      "dependencies": [],
+      "status": "done"
+    },
+    {
+      "id": "p1t2", "projectId": "p1",
+      "name": "Technical Architecture Design",
+      "description": "Define the full-stack architecture, select technology stack, and document system design decisions.",
+      "estimate": { "size": "XL", "hours": 32 },
+      "assignmentIds": ["a-p1t2-tm2", "a-p1t2-tm4"],
+      "dependencies": ["p1t1"],
+      "status": "done"
+    },
+    {
+      "id": "p1t3", "projectId": "p1",
+      "name": "UX Research & Wireframes",
+      "description": "Conduct user research, create personas, and deliver low-fidelity wireframes for all major screens.",
+      "estimate": { "size": "XL", "hours": 32 },
+      "assignmentIds": ["a-p1t3-tm7", "a-p1t3-tm3"],
+      "dependencies": ["p1t1"],
+      "status": "done"
+    },
+    {
+      "id": "p1t4", "projectId": "p1",
+      "name": "UI Component Library Setup",
+      "description": "Establish the shared design system and component library used across the Customer Portal and Loyalty Program.",
+      "estimate": { "size": "L", "hours": 16 },
+      "assignmentIds": ["a-p1t4-tm7", "a-p1t4-tm3"],
+      "dependencies": ["p1t3"],
+      "status": "done"
+    },
+    {
+      "id": "p1t5", "projectId": "p1",
+      "name": "Customer Portal Frontend",
+      "description": "Build the customer-facing portal: ordering flow, account management, and order history.",
+      "estimate": { "size": "XXL", "hours": 40 },
+      "assignmentIds": ["a-p1t5-tm3", "a-p1t5-tm7"],
+      "dependencies": ["p1t4"],
+      "status": "in-progress"
+    },
+    {
+      "id": "p1t6", "projectId": "p1",
+      "name": "Core Backend API",
+      "description": "Develop the primary REST API covering products, orders, users, and authentication endpoints.",
+      "estimate": { "size": "XXL", "hours": 40 },
+      "assignmentIds": ["a-p1t6-tm2"],
+      "dependencies": ["p1t2"],
+      "status": "in-progress"
+    },
+    {
+      "id": "p1t7", "projectId": "p1",
+      "name": "Loyalty Program Backend",
+      "description": "Implement points accrual, tier management, redemption rules, and reward fulfilment logic.",
+      "estimate": { "size": "XL", "hours": 32 },
+      "assignmentIds": ["a-p1t7-tm2"],
+      "dependencies": ["p1t6"],
+      "status": "in-progress"
+    },
+    {
+      "id": "p1t8", "projectId": "p1",
+      "name": "Database Schema Design",
+      "description": "Design relational schema, write migrations, and document ERD for all core domain entities.",
+      "estimate": { "size": "L", "hours": 16 },
+      "assignmentIds": ["a-p1t8-tm2", "a-p1t8-tm5"],
+      "dependencies": ["p1t2"],
+      "status": "done"
+    },
+    {
+      "id": "p1t9", "projectId": "p1",
+      "name": "Analytics Data Pipeline",
+      "description": "Build ETL pipeline to feed sales, loyalty, and engagement data into the analytics warehouse.",
+      "estimate": { "size": "XL", "hours": 32 },
+      "assignmentIds": ["a-p1t9-tm5", "a-p1t9-tm2"],
+      "dependencies": ["p1t8"],
+      "status": "blocked"
+    },
+    {
+      "id": "p1t10", "projectId": "p1",
+      "name": "Reporting Dashboard",
+      "description": "Create the internal reporting dashboard showing sales trends, loyalty KPIs, and customer analytics.",
+      "estimate": { "size": "XL", "hours": 32 },
+      "assignmentIds": ["a-p1t10-tm5", "a-p1t10-tm3"],
+      "dependencies": ["p1t9"],
+      "status": "todo"
+    },
+    {
+      "id": "p1t11", "projectId": "p1",
+      "name": "Cloud Infrastructure Provisioning",
+      "description": "Provision all cloud resources: compute, networking, storage, and IAM roles using Infrastructure-as-Code.",
+      "estimate": { "size": "XL", "hours": 32 },
+      "assignmentIds": ["a-p1t11-tm4"],
+      "dependencies": ["p1t2"],
+      "status": "in-progress"
+    },
+    {
+      "id": "p1t12", "projectId": "p1",
+      "name": "CI/CD Pipeline Setup",
+      "description": "Configure automated build, test, and deployment pipelines for all services.",
+      "estimate": { "size": "L", "hours": 16 },
+      "assignmentIds": ["a-p1t12-tm4"],
+      "dependencies": ["p1t11"],
+      "status": "done"
+    },
+    {
+      "id": "p1t13", "projectId": "p1",
+      "name": "Integration Testing",
+      "description": "Write and execute integration test suites covering API contracts, database interactions, and third-party services.",
+      "estimate": { "size": "L", "hours": 16 },
+      "assignmentIds": ["a-p1t13-tm6", "a-p1t13-tm2"],
+      "dependencies": ["p1t6"],
+      "status": "todo"
+    },
+    {
+      "id": "p1t14", "projectId": "p1",
+      "name": "Project Management & Steering",
+      "description": "Ongoing sprint planning, stakeholder reporting, risk management, and team coordination.",
+      "estimate": { "size": "XL", "hours": 32 },
+      "assignmentIds": ["a-p1t14-tm1"],
+      "dependencies": [],
+      "status": "in-progress"
+    },
+    {
+      "id": "p1t15", "projectId": "p1",
+      "name": "Frontend Performance Optimization",
+      "description": "Audit and optimize bundle size, lazy loading, caching strategies, and Core Web Vitals scores.",
+      "estimate": { "size": "XL", "hours": 32 },
+      "assignmentIds": ["a-p1t15-tm3", "a-p1t15-tm7"],
+      "dependencies": ["p1t5"],
+      "status": "todo"
+    },
+    {
+      "id": "p1t16", "projectId": "p1",
+      "name": "Data Warehouse Setup",
+      "description": "Configure the analytics data warehouse, partitioning strategy, and access control for reporting queries.",
+      "estimate": { "size": "XL", "hours": 32 },
+      "assignmentIds": ["a-p1t16-tm4", "a-p1t16-tm5"],
+      "dependencies": ["p1t11"],
+      "status": "todo"
+    },
+    {
+      "id": "p1t17", "projectId": "p1",
+      "name": "Database Performance Tuning",
+      "description": "Profile slow queries, add indexes, and optimise connection pooling for production load.",
+      "estimate": { "size": "L", "hours": 16 },
+      "assignmentIds": ["a-p1t17-tm4", "a-p1t17-tm5"],
+      "dependencies": ["p1t8"],
+      "status": "todo"
+    },
+    {
+      "id": "p1t18", "projectId": "p1",
+      "name": "Brand & Visual Identity Design",
+      "description": "Deliver final brand guidelines, icon set, illustration library, and high-fidelity mockups for all screens.",
+      "estimate": { "size": "XL", "hours": 32 },
+      "assignmentIds": ["a-p1t18-tm7"],
+      "dependencies": ["p1t3"],
+      "status": "todo"
+    },
+
+    {
+      "id": "p2t1", "projectId": "p2",
+      "name": "Security Requirements Analysis",
+      "description": "Gather requirements from building management and residents; define threat model and compliance obligations.",
+      "estimate": { "size": "L", "hours": 16 },
+      "assignmentIds": ["a-p2t1-tm1", "a-p2t1-tm4"],
+      "dependencies": [],
+      "status": "done"
+    },
+    {
+      "id": "p2t2", "projectId": "p2",
+      "name": "Network Topology & Architecture Design",
+      "description": "Design the physical and logical network layout for cameras, access points, and control systems.",
+      "estimate": { "size": "XL", "hours": 32 },
+      "assignmentIds": ["a-p2t2-tm4", "a-p2t2-tm2"],
+      "dependencies": ["p2t1"],
+      "status": "done"
+    },
+    {
+      "id": "p2t3", "projectId": "p2",
+      "name": "Access Control Backend API",
+      "description": "Build backend services for door access, credential management, and access log storage.",
+      "estimate": { "size": "XXL", "hours": 40 },
+      "assignmentIds": ["a-p2t3-tm2"],
+      "dependencies": ["p2t2"],
+      "status": "in-progress"
+    },
+    {
+      "id": "p2t4", "projectId": "p2",
+      "name": "Camera Feed & IoT Integration API",
+      "description": "Integrate camera hardware SDKs and IoT sensors; build event streaming layer for real-time feeds.",
+      "estimate": { "size": "XL", "hours": 32 },
+      "assignmentIds": ["a-p2t4-tm2", "a-p2t4-tm4"],
+      "dependencies": ["p2t2"],
+      "status": "in-progress"
+    },
+    {
+      "id": "p2t5", "projectId": "p2",
+      "name": "Security Dashboard UI",
+      "description": "Build the live security monitoring dashboard: camera grid, access log feed, and alert timeline.",
+      "estimate": { "size": "XL", "hours": 32 },
+      "assignmentIds": ["a-p2t5-tm3", "a-p2t5-tm7"],
+      "dependencies": [],
+      "status": "todo"
+    },
+    {
+      "id": "p2t6", "projectId": "p2",
+      "name": "Resident Portal UI",
+      "description": "Build the resident-facing web portal for visitor pre-registration, access history, and notifications.",
+      "estimate": { "size": "XL", "hours": 32 },
+      "assignmentIds": ["a-p2t6-tm3", "a-p2t6-tm7"],
+      "dependencies": [],
+      "status": "todo"
+    },
+    {
+      "id": "p2t7", "projectId": "p2",
+      "name": "Incident Reporting & Analytics",
+      "description": "Build the incident log, auto-categorisation engine, and analytics reports for building management.",
+      "estimate": { "size": "XL", "hours": 32 },
+      "assignmentIds": ["a-p2t7-tm5", "a-p2t7-tm2"],
+      "dependencies": ["p2t3"],
+      "status": "todo"
+    },
+    {
+      "id": "p2t8", "projectId": "p2",
+      "name": "Compliance & Audit Reporting",
+      "description": "Generate monthly and on-demand compliance reports meeting building regulations and insurance requirements.",
+      "estimate": { "size": "L", "hours": 16 },
+      "assignmentIds": ["a-p2t8-tm5", "a-p2t8-tm1"],
+      "dependencies": ["p2t7"],
+      "status": "todo"
+    },
+    {
+      "id": "p2t9", "projectId": "p2",
+      "name": "Security Test Suite",
+      "description": "Write comprehensive test plans and automated test suites for access control, alerts, and camera streams.",
+      "estimate": { "size": "XL", "hours": 32 },
+      "assignmentIds": ["a-p2t9-tm6"],
+      "dependencies": ["p2t3"],
+      "status": "todo"
+    },
+    {
+      "id": "p2t10", "projectId": "p2",
+      "name": "Penetration Testing",
+      "description": "Conduct penetration testing on all externally accessible endpoints and hardware integration points.",
+      "estimate": { "size": "L", "hours": 16 },
+      "assignmentIds": ["a-p2t10-tm6", "a-p2t10-tm4"],
+      "dependencies": ["p2t9"],
+      "status": "todo"
+    },
+    {
+      "id": "p2t11", "projectId": "p2",
+      "name": "Infrastructure Hardening",
+      "description": "Apply security baselines, patch management, and network segmentation across all system components.",
+      "estimate": { "size": "L", "hours": 16 },
+      "assignmentIds": ["a-p2t11-tm4"],
+      "dependencies": ["p2t2"],
+      "status": "in-progress"
+    },
+    {
+      "id": "p2t12", "projectId": "p2",
+      "name": "Project Oversight & Stakeholder Reporting",
+      "description": "Ongoing sprint planning, building management briefings, and milestone tracking.",
+      "estimate": { "size": "XL", "hours": 32 },
+      "assignmentIds": ["a-p2t12-tm1"],
+      "dependencies": [],
+      "status": "in-progress"
+    },
+    {
+      "id": "p2t13", "projectId": "p2",
+      "name": "DevOps Monitoring & Logging",
+      "description": "Deploy centralised logging, uptime monitoring, and on-call alerting for all security platform services.",
+      "estimate": { "size": "XXL", "hours": 40 },
+      "assignmentIds": ["a-p2t13-tm4"],
+      "dependencies": ["p2t11"],
+      "status": "todo"
+    },
+    {
+      "id": "p2t14", "projectId": "p2",
+      "name": "Automated Regression Testing",
+      "description": "Build a regression suite that runs on every deploy to catch regressions in access control and alert logic.",
+      "estimate": { "size": "XL", "hours": 32 },
+      "assignmentIds": ["a-p2t14-tm6"],
+      "dependencies": ["p2t9"],
+      "status": "todo"
+    },
+    {
+      "id": "p2t15", "projectId": "p2",
+      "name": "Design System Documentation",
+      "description": "Document all UI components, interaction patterns, and accessibility guidelines used in the security platform.",
+      "estimate": { "size": "XL", "hours": 32 },
+      "assignmentIds": ["a-p2t15-tm7", "a-p2t15-tm3"],
+      "dependencies": ["p2t5"],
+      "status": "todo"
+    },
+    {
+      "id": "p2t16", "projectId": "p2",
+      "name": "Project Governance & Risk Register",
+      "description": "Maintain risk register, track open issues, and ensure compliance with building management contracts.",
+      "estimate": { "size": "M", "hours": 8 },
+      "assignmentIds": ["a-p2t16-tm1"],
+      "dependencies": [],
+      "status": "in-progress"
+    },
+
+    {
+      "id": "p3t1", "projectId": "p3",
+      "name": "Discovery & System Architecture",
+      "description": "Interview HR stakeholders, map current processes, and design the overall system architecture.",
+      "estimate": { "size": "XL", "hours": 32 },
+      "assignmentIds": ["a-p3t1-tm1", "a-p3t1-tm2", "a-p3t1-tm4"],
+      "dependencies": [],
+      "status": "in-progress"
+    },
+    {
+      "id": "p3t2", "projectId": "p3",
+      "name": "Employee Profile Management Backend",
+      "description": "Build APIs for employee records, role history, department structure, and document storage.",
+      "estimate": { "size": "XXL", "hours": 40 },
+      "assignmentIds": ["a-p3t2-tm2"],
+      "dependencies": ["p3t1"],
+      "status": "todo"
+    },
+    {
+      "id": "p3t3", "projectId": "p3",
+      "name": "Performance Review Backend",
+      "description": "Implement review cycles, scoring models, calibration workflows, and review history storage.",
+      "estimate": { "size": "XL", "hours": 32 },
+      "assignmentIds": ["a-p3t3-tm2"],
+      "dependencies": ["p3t2"],
+      "status": "todo"
+    },
+    {
+      "id": "p3t4", "projectId": "p3",
+      "name": "HR Analytics Dashboard",
+      "description": "Build the people analytics dashboard: headcount trends, attrition risk, and performance distributions.",
+      "estimate": { "size": "XL", "hours": 32 },
+      "assignmentIds": ["a-p3t4-tm5", "a-p3t4-tm2"],
+      "dependencies": ["p3t2"],
+      "status": "todo"
+    },
+    {
+      "id": "p3t5", "projectId": "p3",
+      "name": "Employee Directory & Profile UI",
+      "description": "Build the searchable employee directory and individual profile pages with org chart view.",
+      "estimate": { "size": "XL", "hours": 32 },
+      "assignmentIds": ["a-p3t5-tm3", "a-p3t5-tm7"],
+      "dependencies": [],
+      "status": "todo"
+    },
+    {
+      "id": "p3t6", "projectId": "p3",
+      "name": "Performance Review UI",
+      "description": "Build the review submission, manager calibration, and historical review browsing interfaces.",
+      "estimate": { "size": "XXL", "hours": 40 },
+      "assignmentIds": ["a-p3t6-tm3", "a-p3t6-tm7"],
+      "dependencies": ["p3t5"],
+      "status": "todo"
+    },
+    {
+      "id": "p3t7", "projectId": "p3",
+      "name": "Cloud & DevOps Setup",
+      "description": "Provision cloud infrastructure, configure Kubernetes clusters, and set up CI/CD pipelines for all services.",
+      "estimate": { "size": "XL", "hours": 32 },
+      "assignmentIds": ["a-p3t7-tm4"],
+      "dependencies": ["p3t1"],
+      "status": "todo"
+    },
+    {
+      "id": "p3t8", "projectId": "p3",
+      "name": "QA Test Planning & Automation",
+      "description": "Define test strategy, build automated E2E test suite, and set up test reporting infrastructure.",
+      "estimate": { "size": "XL", "hours": 32 },
+      "assignmentIds": ["a-p3t8-tm6"],
+      "dependencies": ["p3t2"],
+      "status": "todo"
+    },
+    {
+      "id": "p3t9", "projectId": "p3",
+      "name": "UX Design & High-Fidelity Prototypes",
+      "description": "Deliver high-fidelity designs and interactive prototypes for all major user journeys in the TMS.",
+      "estimate": { "size": "XL", "hours": 32 },
+      "assignmentIds": ["a-p3t9-tm7", "a-p3t9-tm3"],
+      "dependencies": [],
+      "status": "in-progress"
+    },
+    {
+      "id": "p3t10", "projectId": "p3",
+      "name": "User Research & Persona Development",
+      "description": "Conduct interviews with HR managers and employees; develop personas and journey maps for the TMS.",
+      "estimate": { "size": "XL", "hours": 32 },
+      "assignmentIds": ["a-p3t10-tm7"],
+      "dependencies": [],
+      "status": "in-progress"
+    },
+    {
+      "id": "p3t11", "projectId": "p3",
+      "name": "Responsive Design Implementation",
+      "description": "Ensure all TMS screens are fully responsive across desktop, tablet, and mobile breakpoints.",
+      "estimate": { "size": "XL", "hours": 32 },
+      "assignmentIds": ["a-p3t11-tm3", "a-p3t11-tm7"],
+      "dependencies": ["p3t5"],
+      "status": "todo"
+    },
+    {
+      "id": "p3t12", "projectId": "p3",
+      "name": "Business Intelligence Reports",
+      "description": "Build scheduled and ad-hoc BI reports for HR leadership: headcount forecasting, compensation analysis, and turnover.",
+      "estimate": { "size": "XL", "hours": 32 },
+      "assignmentIds": ["a-p3t12-tm5", "a-p3t12-tm3"],
+      "dependencies": ["p3t4"],
+      "status": "todo"
+    },
+    {
+      "id": "p3t13", "projectId": "p3",
+      "name": "Smoke & Sanity Testing",
+      "description": "Execute pre-release smoke tests across all environments to verify critical paths before stakeholder demos.",
+      "estimate": { "size": "L", "hours": 16 },
+      "assignmentIds": ["a-p3t13-tm6"],
+      "dependencies": ["p3t8"],
+      "status": "todo"
+    },
+    {
+      "id": "p3t14", "projectId": "p3",
+      "name": "Icon Library & Illustration Set",
+      "description": "Create a custom icon library and illustration set aligned to the HR brand guidelines.",
+      "estimate": { "size": "M", "hours": 8 },
+      "assignmentIds": ["a-p3t14-tm7"],
+      "dependencies": ["p3t9"],
+      "status": "todo"
+    },
+    {
+      "id": "p3t15", "projectId": "p3",
+      "name": "Sprint Planning & Backlog Grooming",
+      "description": "Facilitate bi-weekly sprint ceremonies, maintain the product backlog, and report project status to HR leadership.",
+      "estimate": { "size": "M", "hours": 8 },
+      "assignmentIds": ["a-p3t15-tm1"],
+      "dependencies": [],
+      "status": "in-progress"
+    }
+  ],
+
+  "assignments": [
+    { "id": "a-p1t1-tm1",  "taskId": "p1t1",  "memberId": "tm1", "hoursAllocated": 4  },
+    { "id": "a-p1t1-tm2",  "taskId": "p1t1",  "memberId": "tm2", "hoursAllocated": 4  },
+    { "id": "a-p1t2-tm2",  "taskId": "p1t2",  "memberId": "tm2", "hoursAllocated": 20 },
+    { "id": "a-p1t2-tm4",  "taskId": "p1t2",  "memberId": "tm4", "hoursAllocated": 12 },
+    { "id": "a-p1t3-tm7",  "taskId": "p1t3",  "memberId": "tm7", "hoursAllocated": 24 },
+    { "id": "a-p1t3-tm3",  "taskId": "p1t3",  "memberId": "tm3", "hoursAllocated": 8  },
+    { "id": "a-p1t4-tm7",  "taskId": "p1t4",  "memberId": "tm7", "hoursAllocated": 10 },
+    { "id": "a-p1t4-tm3",  "taskId": "p1t4",  "memberId": "tm3", "hoursAllocated": 6  },
+    { "id": "a-p1t5-tm3",  "taskId": "p1t5",  "memberId": "tm3", "hoursAllocated": 32 },
+    { "id": "a-p1t5-tm7",  "taskId": "p1t5",  "memberId": "tm7", "hoursAllocated": 8  },
+    { "id": "a-p1t6-tm2",  "taskId": "p1t6",  "memberId": "tm2", "hoursAllocated": 40 },
+    { "id": "a-p1t7-tm2",  "taskId": "p1t7",  "memberId": "tm2", "hoursAllocated": 32 },
+    { "id": "a-p1t8-tm2",  "taskId": "p1t8",  "memberId": "tm2", "hoursAllocated": 10 },
+    { "id": "a-p1t8-tm5",  "taskId": "p1t8",  "memberId": "tm5", "hoursAllocated": 6  },
+    { "id": "a-p1t9-tm5",  "taskId": "p1t9",  "memberId": "tm5", "hoursAllocated": 28 },
+    { "id": "a-p1t9-tm2",  "taskId": "p1t9",  "memberId": "tm2", "hoursAllocated": 4  },
+    { "id": "a-p1t10-tm5", "taskId": "p1t10", "memberId": "tm5", "hoursAllocated": 20 },
+    { "id": "a-p1t10-tm3", "taskId": "p1t10", "memberId": "tm3", "hoursAllocated": 12 },
+    { "id": "a-p1t11-tm4", "taskId": "p1t11", "memberId": "tm4", "hoursAllocated": 32 },
+    { "id": "a-p1t12-tm4", "taskId": "p1t12", "memberId": "tm4", "hoursAllocated": 16 },
+    { "id": "a-p1t13-tm6", "taskId": "p1t13", "memberId": "tm6", "hoursAllocated": 12 },
+    { "id": "a-p1t13-tm2", "taskId": "p1t13", "memberId": "tm2", "hoursAllocated": 4  },
+    { "id": "a-p1t14-tm1", "taskId": "p1t14", "memberId": "tm1", "hoursAllocated": 32 },
+    { "id": "a-p1t15-tm3", "taskId": "p1t15", "memberId": "tm3", "hoursAllocated": 28 },
+    { "id": "a-p1t15-tm7", "taskId": "p1t15", "memberId": "tm7", "hoursAllocated": 4  },
+    { "id": "a-p1t16-tm4", "taskId": "p1t16", "memberId": "tm4", "hoursAllocated": 24 },
+    { "id": "a-p1t16-tm5", "taskId": "p1t16", "memberId": "tm5", "hoursAllocated": 8  },
+    { "id": "a-p1t17-tm4", "taskId": "p1t17", "memberId": "tm4", "hoursAllocated": 12 },
+    { "id": "a-p1t17-tm5", "taskId": "p1t17", "memberId": "tm5", "hoursAllocated": 4  },
+    { "id": "a-p1t18-tm7", "taskId": "p1t18", "memberId": "tm7", "hoursAllocated": 32 },
+
+    { "id": "a-p2t1-tm1",  "taskId": "p2t1",  "memberId": "tm1", "hoursAllocated": 8  },
+    { "id": "a-p2t1-tm4",  "taskId": "p2t1",  "memberId": "tm4", "hoursAllocated": 8  },
+    { "id": "a-p2t2-tm4",  "taskId": "p2t2",  "memberId": "tm4", "hoursAllocated": 20 },
+    { "id": "a-p2t2-tm2",  "taskId": "p2t2",  "memberId": "tm2", "hoursAllocated": 12 },
+    { "id": "a-p2t3-tm2",  "taskId": "p2t3",  "memberId": "tm2", "hoursAllocated": 40 },
+    { "id": "a-p2t4-tm2",  "taskId": "p2t4",  "memberId": "tm2", "hoursAllocated": 24 },
+    { "id": "a-p2t4-tm4",  "taskId": "p2t4",  "memberId": "tm4", "hoursAllocated": 8  },
+    { "id": "a-p2t5-tm3",  "taskId": "p2t5",  "memberId": "tm3", "hoursAllocated": 20 },
+    { "id": "a-p2t5-tm7",  "taskId": "p2t5",  "memberId": "tm7", "hoursAllocated": 12 },
+    { "id": "a-p2t6-tm3",  "taskId": "p2t6",  "memberId": "tm3", "hoursAllocated": 24 },
+    { "id": "a-p2t6-tm7",  "taskId": "p2t6",  "memberId": "tm7", "hoursAllocated": 8  },
+    { "id": "a-p2t7-tm5",  "taskId": "p2t7",  "memberId": "tm5", "hoursAllocated": 28 },
+    { "id": "a-p2t7-tm2",  "taskId": "p2t7",  "memberId": "tm2", "hoursAllocated": 4  },
+    { "id": "a-p2t8-tm5",  "taskId": "p2t8",  "memberId": "tm5", "hoursAllocated": 12 },
+    { "id": "a-p2t8-tm1",  "taskId": "p2t8",  "memberId": "tm1", "hoursAllocated": 4  },
+    { "id": "a-p2t9-tm6",  "taskId": "p2t9",  "memberId": "tm6", "hoursAllocated": 32 },
+    { "id": "a-p2t10-tm6", "taskId": "p2t10", "memberId": "tm6", "hoursAllocated": 12 },
+    { "id": "a-p2t10-tm4", "taskId": "p2t10", "memberId": "tm4", "hoursAllocated": 4  },
+    { "id": "a-p2t11-tm4", "taskId": "p2t11", "memberId": "tm4", "hoursAllocated": 16 },
+    { "id": "a-p2t12-tm1", "taskId": "p2t12", "memberId": "tm1", "hoursAllocated": 32 },
+    { "id": "a-p2t13-tm4", "taskId": "p2t13", "memberId": "tm4", "hoursAllocated": 40 },
+    { "id": "a-p2t14-tm6", "taskId": "p2t14", "memberId": "tm6", "hoursAllocated": 32 },
+    { "id": "a-p2t15-tm7", "taskId": "p2t15", "memberId": "tm7", "hoursAllocated": 28 },
+    { "id": "a-p2t15-tm3", "taskId": "p2t15", "memberId": "tm3", "hoursAllocated": 4  },
+    { "id": "a-p2t16-tm1", "taskId": "p2t16", "memberId": "tm1", "hoursAllocated": 8  },
+
+    { "id": "a-p3t1-tm1",  "taskId": "p3t1",  "memberId": "tm1", "hoursAllocated": 8  },
+    { "id": "a-p3t1-tm2",  "taskId": "p3t1",  "memberId": "tm2", "hoursAllocated": 16 },
+    { "id": "a-p3t1-tm4",  "taskId": "p3t1",  "memberId": "tm4", "hoursAllocated": 8  },
+    { "id": "a-p3t2-tm2",  "taskId": "p3t2",  "memberId": "tm2", "hoursAllocated": 40 },
+    { "id": "a-p3t3-tm2",  "taskId": "p3t3",  "memberId": "tm2", "hoursAllocated": 32 },
+    { "id": "a-p3t4-tm5",  "taskId": "p3t4",  "memberId": "tm5", "hoursAllocated": 28 },
+    { "id": "a-p3t4-tm2",  "taskId": "p3t4",  "memberId": "tm2", "hoursAllocated": 4  },
+    { "id": "a-p3t5-tm3",  "taskId": "p3t5",  "memberId": "tm3", "hoursAllocated": 24 },
+    { "id": "a-p3t5-tm7",  "taskId": "p3t5",  "memberId": "tm7", "hoursAllocated": 8  },
+    { "id": "a-p3t6-tm3",  "taskId": "p3t6",  "memberId": "tm3", "hoursAllocated": 28 },
+    { "id": "a-p3t6-tm7",  "taskId": "p3t6",  "memberId": "tm7", "hoursAllocated": 12 },
+    { "id": "a-p3t7-tm4",  "taskId": "p3t7",  "memberId": "tm4", "hoursAllocated": 32 },
+    { "id": "a-p3t8-tm6",  "taskId": "p3t8",  "memberId": "tm6", "hoursAllocated": 32 },
+    { "id": "a-p3t9-tm7",  "taskId": "p3t9",  "memberId": "tm7", "hoursAllocated": 24 },
+    { "id": "a-p3t9-tm3",  "taskId": "p3t9",  "memberId": "tm3", "hoursAllocated": 8  },
+    { "id": "a-p3t10-tm7", "taskId": "p3t10", "memberId": "tm7", "hoursAllocated": 32 },
+    { "id": "a-p3t11-tm3", "taskId": "p3t11", "memberId": "tm3", "hoursAllocated": 24 },
+    { "id": "a-p3t11-tm7", "taskId": "p3t11", "memberId": "tm7", "hoursAllocated": 8  },
+    { "id": "a-p3t12-tm5", "taskId": "p3t12", "memberId": "tm5", "hoursAllocated": 28 },
+    { "id": "a-p3t12-tm3", "taskId": "p3t12", "memberId": "tm3", "hoursAllocated": 4  },
+    { "id": "a-p3t13-tm6", "taskId": "p3t13", "memberId": "tm6", "hoursAllocated": 16 },
+    { "id": "a-p3t14-tm7", "taskId": "p3t14", "memberId": "tm7", "hoursAllocated": 8  },
+    { "id": "a-p3t15-tm1", "taskId": "p3t15", "memberId": "tm1", "hoursAllocated": 8  }
+  ]
+}
