@@ -38,7 +38,7 @@ const DEFAULT_FORM = {
 export function TaskDrawer({ open, onOpenChange, projectId, task }: TaskDrawerProps) {
   const { addTask, updateTask, addTaskNote, deleteTaskNote, tasks: allTasks } = useProjectStore()
   const { assignments, addAssignment, deleteAssignment } = useAssignmentStore()
-  const { teamMembers, users } = useTeamStore()
+  const { teamMembers } = useTeamStore()
   const currentUser = useAuthStore((s) => s.currentUser)
 
   const [form, setForm] = useState(DEFAULT_FORM)

@@ -20,6 +20,7 @@ const makeTask = (overrides: Partial<Task> = {}): Task => ({
   priority: 'medium',
   assignmentIds: [],
   dependencies: [],
+  notes: [],
   createdBy: 'u1',
   updatedBy: 'u1',
   createdAt: '',

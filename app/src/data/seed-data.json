@@ -53,55 +53,6 @@
     }
   },
   "users": [
-    {
-      "id": "u1",
-      "name": "Gunter",
-      "email": "gunter@friends.it",
-      "role": "admin",
-      "teamMemberId": "tm1"
-    },
-    {
-      "id": "u2",
-      "name": "Ross Geller",
-      "email": "ross@friends.it",
-      "role": "team-member",
-      "teamMemberId": "tm2"
-    },
-    {
-      "id": "u3",
-      "name": "Rachel Green",
-      "email": "rachel@friends.it",
-      "role": "team-member",
-      "teamMemberId": "tm3"
-    },
-    {
-      "id": "u4",
-      "name": "Monica Geller",
-      "email": "monica@friends.it",
-      "role": "team-member",
-      "teamMemberId": "tm4"
-    },
-    {
-      "id": "u5",
-      "name": "Chandler Bing",
-      "email": "chandler@friends.it",
-      "role": "viewer",
-      "teamMemberId": "tm5"
-    },
-    {
-      "id": "u6",
-      "name": "Joey Tribbiani",
-      "email": "joey@friends.it",
-      "role": "viewer",
-      "teamMemberId": "tm6"
-    },
-    {
-      "id": "u7",
-      "name": "Phoebe Buffay",
-      "email": "phoebe@friends.it",
-      "role": "viewer",
-      "teamMemberId": "tm7"
-    }
     { "id": "u1", "name": "Gunter",        "email": "gunter@friends.it",  "role": "admin",       "teamMemberId": "tm1" },
     { "id": "u2", "name": "Ross Geller",   "email": "ross@friends.it",    "role": "team-member", "teamMemberId": "tm2" },
     { "id": "u3", "name": "Rachel Green",  "email": "rachel@friends.it",  "role": "team-member", "teamMemberId": "tm3" },

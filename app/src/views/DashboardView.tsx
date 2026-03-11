@@ -14,7 +14,7 @@ import type { ProjectStatus, TaskStatus } from '@/types'
 
 interface DashboardViewProps {
   onNavigate: (view: 'projects' | 'team' | 'capacity') => void
-  onNavigateToProjects: (filter?: TaskStatus) => void
+  onNavigateToProjects?: (filter?: TaskStatus) => void
 }
 
 // ─── Status color map ─────────────────────────────────────────────────────────
@@ -30,9 +30,8 @@ const STATUS_COLORS: Record<string, string> = {
 // ─── Summary stat card ────────────────────────────────────────────────────────
 
 function StatCard({ title, value, color = 'gray', danger, onClick }: { title: string; value: number; color?: string; danger?: boolean; onClick?: () => void }) {
-  const CardComponent = onClick ? 'button' : 'div'
   return (
-    <Card 
+    <Card
       className={`border-l-4 ${color} ${onClick ? 'cursor-pointer transition-shadow hover:shadow-md' : ''}`}
       onClick={onClick}
       role={onClick ? 'button' : undefined}
@@ -118,26 +117,26 @@ export function DashboardView({ onNavigate, onNavigateToProjects }: DashboardVie
           title="Projects" 
           value={projects.length} 
           color="border-l-indigo-500" 
-          onClick={() => onNavigateToProjects()}
+          onClick={() => onNavigateToProjects?.()}
         />
-        <StatCard 
-          title="Tasks" 
-          value={tasks.length} 
-          color="border-l-violet-500" 
-          onClick={() => onNavigateToProjects('todo')}
+        <StatCard
+          title="Tasks"
+          value={tasks.length}
+          color="border-l-violet-500"
+          onClick={() => onNavigateToProjects?.('todo')}
         />
-        <StatCard 
-          title="Open Tasks" 
-          value={openTasks} 
-          color="border-l-amber-500" 
-          onClick={() => onNavigateToProjects('in-progress')}
+        <StatCard
+          title="Open Tasks"
+          value={openTasks}
+          color="border-l-amber-500"
+          onClick={() => onNavigateToProjects?.('in-progress')}
         />
-        <StatCard 
-          title="Blocked Tasks" 
-          value={blockedStatusTasks} 
-          color={blockedStatusTasks > 0 ? "border-l-red-500" : "border-l-gray-300"} 
+        <StatCard
+          title="Blocked Tasks"
+          value={blockedStatusTasks}
+          color={blockedStatusTasks > 0 ? "border-l-red-500" : "border-l-gray-300"}
           danger={blockedStatusTasks > 0}
-          onClick={() => onNavigateToProjects('blocked')}
+          onClick={() => onNavigateToProjects?.('blocked')}
         />
       </div>
 
