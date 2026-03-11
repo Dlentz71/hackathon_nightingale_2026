@@ -43,8 +43,12 @@ export function Sidebar({ activeView, onNavigate }: SidebarProps) {
           const isActive = item.id === activeView
           return (
             <li key={item.id}>
-              <button
-                onClick={() => onNavigate(item.id)}
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault()
+                  onNavigate(item.id)
+                }}
                 aria-current={isActive ? 'page' : undefined}
                 className={cn(
                   'flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors',
@@ -56,7 +60,7 @@ export function Sidebar({ activeView, onNavigate }: SidebarProps) {
               >
                 {item.icon}
                 {item.label}
-              </button>
+              </a>
             </li>
           )
         })}
