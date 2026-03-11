@@ -167,7 +167,7 @@ export function TaskList({ projectId, canEdit, canBulkDelete, onAddTask, onEditT
       <Separator />
 
       {/* Task rows */}
-      <div role="list" aria-label="Task list">
+      <div role="list" aria-label="Task list" className="space-y-1.5">
         {filteredTasks.length === 0 ? (
           <p className="py-4 text-center text-sm text-muted-foreground">No tasks match your filters.</p>
         ) : (

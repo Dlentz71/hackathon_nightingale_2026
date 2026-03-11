@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { ChevronDown, ChevronRight, Pencil, Trash2, Calendar } from 'lucide-react'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -29,8 +29,8 @@ export function ProjectCard({ project, onEdit, onAddTask, onEditTask }: ProjectC
   const [deleteOpen, setDeleteOpen] = useState(false)
   const [statusError, setStatusError] = useState<string | null>(null)
 
-  const tasks = useProjectStore((s) => s.tasks.filter((t) => t.projectId === project.id))
   const allTasks = useProjectStore((s) => s.tasks)
+  const tasks = useMemo(() => allTasks.filter((t) => t.projectId === project.id), [allTasks, project.id])
   const { deleteProject, updateProject } = useProjectStore()
   const { assignments } = useAssignmentStore()
   const currentUser = useAuthStore((s) => s.currentUser)
@@ -53,7 +53,7 @@ export function ProjectCard({ project, onEdit, onAddTask, onEditTask }: ProjectC
 
   function handleStatusChange(next: ProjectStatus) {
     if (!currentUser) return
-    const { allowed, reason } = canTransitionStatus(project, next, allTasks.filter(t => t.projectId === project.id), currentUser)
+    const { allowed, reason } = canTransitionStatus(project, next, tasks, currentUser)
     if (!allowed) {
       setStatusError(reason ?? 'Status change not allowed.')
       return

@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react'
 import { Check, ChevronsUpDown, TriangleAlert, X } from 'lucide-react'
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Label } from '@/components/ui/label'
 import { Badge } from '@/components/ui/badge'
-import { Separator } from '@/components/ui/separator'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command'
 import { useProjectStore } from '@/store/useProjectStore'
@@ -193,279 +192,277 @@ export function TaskDrawer({ open, onOpenChange, projectId, task }: TaskDrawerPr
     .filter(Boolean)
 
   return (
-    <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent className="w-full sm:max-w-md overflow-y-auto">
-        <SheetHeader className="mb-6">
-          <SheetTitle>{isEditing ? 'Edit task' : 'New task'}</SheetTitle>
-          <SheetDescription>
-            {isEditing ? 'Update task details.' : 'Add a task to this project.'}
-          </SheetDescription>
-        </SheetHeader>
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className={isEditing ? "max-w-4xl w-full overflow-y-auto max-h-[90vh]" : "max-w-lg w-full overflow-y-auto max-h-[90vh]"}>
+        <DialogHeader className="mb-4">
+          <DialogTitle>{isEditing ? 'Edit task' : 'New task'}</DialogTitle>
+          <DialogDescription>
+            {isEditing ? 'Update task details and manage assignments.' : 'Add a task to this project.'}
+          </DialogDescription>
+        </DialogHeader>
 
-        <form onSubmit={handleSubmit} noValidate className="space-y-5">
-          <div className="space-y-1.5">
-            <Label htmlFor="task-name">Name <span aria-hidden="true">*</span></Label>
-            <Input
-              id="task-name"
-              value={form.name}
-              onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
-              aria-required="true"
-              aria-describedby={errors.name ? 'task-name-error' : undefined}
-              className={cn(errors.name && 'border-destructive focus-visible:ring-destructive')}
-            />
-            {errors.name && (
-              <p id="task-name-error" className="text-xs text-destructive" role="alert">{errors.name}</p>
-            )}
-          </div>
+        <div className={isEditing ? "grid grid-cols-2 gap-8" : ""}>
+          {/* LEFT column (or single column in create mode): task form */}
+          <div>
+            <form onSubmit={handleSubmit} noValidate className="space-y-5">
+              <div className="space-y-1.5">
+                <Label htmlFor="task-name">Name <span aria-hidden="true">*</span></Label>
+                <Input
+                  id="task-name"
+                  value={form.name}
+                  onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
+                  aria-required="true"
+                  aria-describedby={errors.name ? 'task-name-error' : undefined}
+                  className={cn(errors.name && 'border-destructive focus-visible:ring-destructive')}
+                />
+                {errors.name && (
+                  <p id="task-name-error" className="text-xs text-destructive" role="alert">{errors.name}</p>
+                )}
+              </div>
 
-          <div className="space-y-1.5">
-            <Label htmlFor="task-desc">Description <span aria-hidden="true">*</span></Label>
-            <Textarea
-              id="task-desc"
-              value={form.description}
-              onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))}
-              rows={3}
-              aria-required="true"
-              aria-describedby={errors.description ? 'task-desc-error' : undefined}
-              className={cn(errors.description && 'border-destructive focus-visible:ring-destructive')}
-            />
-            {errors.description && (
-              <p id="task-desc-error" className="text-xs text-destructive" role="alert">{errors.description}</p>
-            )}
-          </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="task-desc">Description <span aria-hidden="true">*</span></Label>
+                <Textarea
+                  id="task-desc"
+                  value={form.description}
+                  onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))}
+                  rows={3}
+                  aria-required="true"
+                  aria-describedby={errors.description ? 'task-desc-error' : undefined}
+                  className={cn(errors.description && 'border-destructive focus-visible:ring-destructive')}
+                />
+                {errors.description && (
+                  <p id="task-desc-error" className="text-xs text-destructive" role="alert">{errors.description}</p>
+                )}
+              </div>
 
-          <div className="grid grid-cols-2 gap-3">
-            <div className="space-y-1.5">
-              <Label htmlFor="task-size">Size <span aria-hidden="true">*</span></Label>
-              <Select value={form.size} onValueChange={(v) => setForm((f) => ({ ...f, size: v as TshirtSize }))}>
-                <SelectTrigger id="task-size" aria-required="true">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {TSHIRT_SIZES.map((s) => (
-                    <SelectItem key={s} value={s}>
-                      {s} · {TSHIRT_HOURS[s]}h
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1.5">
+                  <Label htmlFor="task-size">Size <span aria-hidden="true">*</span></Label>
+                  <Select value={form.size} onValueChange={(v) => setForm((f) => ({ ...f, size: v as TshirtSize }))}>
+                    <SelectTrigger id="task-size" aria-required="true">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {TSHIRT_SIZES.map((s) => (
+                        <SelectItem key={s} value={s}>
+                          {s} · {TSHIRT_HOURS[s]}h
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
 
-            <div className="space-y-1.5">
-              <Label htmlFor="task-priority">Priority <span aria-hidden="true">*</span></Label>
-              <Select value={form.priority} onValueChange={(v) => setForm((f) => ({ ...f, priority: v as Priority }))}>
-                <SelectTrigger id="task-priority" aria-required="true">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="high">High</SelectItem>
-                  <SelectItem value="medium">Medium</SelectItem>
-                  <SelectItem value="low">Low</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="task-priority">Priority <span aria-hidden="true">*</span></Label>
+                  <Select value={form.priority} onValueChange={(v) => setForm((f) => ({ ...f, priority: v as Priority }))}>
+                    <SelectTrigger id="task-priority" aria-required="true">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="high">High</SelectItem>
+                      <SelectItem value="medium">Medium</SelectItem>
+                      <SelectItem value="low">Low</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
 
-          <div className="space-y-1.5">
-            <Label htmlFor="task-status">Status</Label>
-            <Select value={form.status} onValueChange={(v) => setForm((f) => ({ ...f, status: v as TaskStatus }))}>
-              <SelectTrigger id="task-status">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="todo">To Do</SelectItem>
-                <SelectItem value="in-progress">In Progress</SelectItem>
-                <SelectItem value="blocked">Blocked</SelectItem>
-                <SelectItem value="done">Done</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="task-status">Status</Label>
+                <Select value={form.status} onValueChange={(v) => setForm((f) => ({ ...f, status: v as TaskStatus }))}>
+                  <SelectTrigger id="task-status">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="todo">To Do</SelectItem>
+                    <SelectItem value="in-progress">In Progress</SelectItem>
+                    <SelectItem value="blocked">Blocked</SelectItem>
+                    <SelectItem value="done">Done</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
 
-          {/* Dependencies multi-select */}
-          {siblingTasks.length > 0 && (
-            <div className="space-y-1.5">
-              <Label>Dependencies <span className="text-muted-foreground text-xs">(optional)</span></Label>
-              <Popover open={depPopoverOpen} onOpenChange={setDepPopoverOpen}>
-                <PopoverTrigger asChild>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    role="combobox"
-                    aria-expanded={depPopoverOpen}
-                    aria-label="Select task dependencies"
-                    className="w-full justify-between font-normal"
-                  >
-                    <span className="truncate text-sm">
-                      {form.dependencies.length === 0
-                        ? 'Select dependencies…'
-                        : `${form.dependencies.length} selected`}
-                    </span>
-                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-full p-0" align="start">
-                  <Command>
-                    <CommandInput placeholder="Search tasks…" />
-                    <CommandList>
-                      <CommandEmpty>No tasks found.</CommandEmpty>
-                      <CommandGroup>
-                        {siblingTasks.map((t) => (
-                          <CommandItem
-                            key={t.id}
-                            value={t.name}
-                            onSelect={() => toggleDependency(t.id)}
-                          >
-                            <Check
-                              className={cn(
-                                'mr-2 h-4 w-4',
-                                form.dependencies.includes(t.id) ? 'opacity-100' : 'opacity-0',
-                              )}
-                              aria-hidden="true"
-                            />
-                            {t.name}
-                          </CommandItem>
-                        ))}
-                      </CommandGroup>
-                    </CommandList>
-                  </Command>
-                </PopoverContent>
-              </Popover>
-              {selectedDepNames.length > 0 && (
-                <div className="flex flex-wrap gap-1 pt-1" aria-label="Selected dependencies">
-                  {selectedDepNames.map((name, i) => (
-                    <Badge key={i} variant="secondary" className="text-xs font-normal">
-                      {name}
-                    </Badge>
-                  ))}
+              {/* Dependencies multi-select */}
+              {siblingTasks.length > 0 && (
+                <div className="space-y-1.5">
+                  <Label>Dependencies <span className="text-muted-foreground text-xs">(optional)</span></Label>
+                  <Popover open={depPopoverOpen} onOpenChange={setDepPopoverOpen}>
+                    <PopoverTrigger asChild>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        role="combobox"
+                        aria-expanded={depPopoverOpen}
+                        aria-label="Select task dependencies"
+                        className="w-full justify-between font-normal"
+                      >
+                        <span className="truncate text-sm">
+                          {form.dependencies.length === 0
+                            ? 'Select dependencies…'
+                            : `${form.dependencies.length} selected`}
+                        </span>
+                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-full p-0" align="start">
+                      <Command>
+                        <CommandInput placeholder="Search tasks…" />
+                        <CommandList>
+                          <CommandEmpty>No tasks found.</CommandEmpty>
+                          <CommandGroup>
+                            {siblingTasks.map((t) => (
+                              <CommandItem
+                                key={t.id}
+                                value={t.name}
+                                onSelect={() => toggleDependency(t.id)}
+                              >
+                                <Check
+                                  className={cn(
+                                    'mr-2 h-4 w-4',
+                                    form.dependencies.includes(t.id) ? 'opacity-100' : 'opacity-0',
+                                  )}
+                                  aria-hidden="true"
+                                />
+                                {t.name}
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
+                  {selectedDepNames.length > 0 && (
+                    <div className="flex flex-wrap gap-1 pt-1" aria-label="Selected dependencies">
+                      {selectedDepNames.map((name, i) => (
+                        <Badge key={i} variant="secondary" className="text-xs font-normal">
+                          {name}
+                        </Badge>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
+
+              <div className="flex justify-end gap-2 pt-2">
+                <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>Cancel</Button>
+                <Button type="submit">{isEditing ? 'Save changes' : 'Add task'}</Button>
+              </div>
+            </form>
+          </div>
+
+          {/* RIGHT column: assignments (edit mode only) */}
+          {isEditing && (
+            <div className="border-l pl-8">
+              <section aria-labelledby="assignments-heading">
+                <h3 id="assignments-heading" className="mb-4 text-sm font-semibold">Assignments</h3>
+
+                {/* Current assignment list */}
+                {taskAssignments.length === 0 ? (
+                  <p className="mb-4 text-xs text-muted-foreground">No one assigned yet.</p>
+                ) : (
+                  <ul className="mb-4 space-y-2" aria-label="Current assignments">
+                    {taskAssignments.map((a) => {
+                      const member = teamMembers.find((m) => m.id === a.memberId)
+                      return (
+                        <li key={a.id} className="flex items-center gap-2 rounded-md border px-3 py-2">
+                          <span className="flex-1 text-sm font-medium">{member?.name ?? 'Unknown'}</span>
+                          <Badge variant="outline" className="text-xs font-normal">{a.hoursAllocated}h</Badge>
+                          {canManage && (
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="icon"
+                              className="h-7 w-7 text-muted-foreground hover:text-destructive"
+                              onClick={() => handleRemoveAssignment(a.id)}
+                              aria-label={`Remove ${member?.name ?? 'assignment'}`}
+                            >
+                              <X className="h-3.5 w-3.5" aria-hidden="true" />
+                            </Button>
+                          )}
+                        </li>
+                      )
+                    })}
+                  </ul>
+                )}
+
+                {/* Add assignment form */}
+                {canManage && availableMembers.length > 0 && (
+                  <div className="space-y-3">
+                    {/* Over-allocation warning */}
+                    {isOverAllocWarning && (
+                      <div
+                        role="alert"
+                        className="flex items-start gap-2 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800"
+                      >
+                        <TriangleAlert className="mt-0.5 h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                        <span>
+                          This will push {projectedMember?.name} above 110% utilization.
+                          You can still add the assignment.
+                        </span>
+                      </div>
+                    )}
+
+                    <div className="flex items-start gap-2">
+                      <div className="flex-1">
+                        <Label htmlFor="assign-member" className="sr-only">Team member</Label>
+                        <Select value={newAssignMemberId} onValueChange={setNewAssignMemberId}>
+                          <SelectTrigger id="assign-member" className="h-9 text-sm">
+                            <SelectValue placeholder="Select member…" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {availableMembers.map((m) => (
+                              <SelectItem key={m.id} value={m.id}>{m.name}</SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="w-20">
+                        <Label htmlFor="assign-hours" className="sr-only">Hours</Label>
+                        <Input
+                          id="assign-hours"
+                          type="number"
+                          min={1}
+                          max={999}
+                          step={1}
+                          placeholder="hrs"
+                          value={newAssignHours}
+                          onChange={(e) => setNewAssignHours(e.target.value)}
+                          className="h-9 text-sm"
+                          aria-label="Hours allocated"
+                        />
+                      </div>
+                      <Button
+                        type="button"
+                        size="sm"
+                        className="h-9"
+                        onClick={handleAddAssignment}
+                      >
+                        Add
+                      </Button>
+                    </div>
+
+                    {assignError && (
+                      <p className="text-xs text-destructive" role="alert">{assignError}</p>
+                    )}
+                  </div>
+                )}
+
+                {canManage && availableMembers.length === 0 && taskAssignments.length > 0 && (
+                  <p className="text-xs text-muted-foreground">All team members are already assigned.</p>
+                )}
+              </section>
             </div>
           )}
+        </div>
 
-          <div className="flex justify-end gap-2 pt-2">
-            <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-              Cancel
-            </Button>
-            <Button type="submit">
-              {isEditing ? 'Save changes' : 'Add task'}
-            </Button>
+        {/* Create mode note */}
+        {!isEditing && (
+          <div className="mt-4 border-t pt-4">
+            <p className="text-xs text-muted-foreground">Save this task first to add team assignments.</p>
           </div>
-        </form>
-
-        {/* ── Assignments section (edit mode only) ─────────────────────────── */}
-        {isEditing ? (
-          <>
-            <Separator className="my-6" />
-            <section aria-labelledby="assignments-heading">
-              <h3 id="assignments-heading" className="mb-4 text-sm font-semibold">
-                Assignments
-              </h3>
-
-              {/* Current assignment list */}
-              {taskAssignments.length === 0 ? (
-                <p className="mb-4 text-xs text-muted-foreground">No one assigned yet.</p>
-              ) : (
-                <ul className="mb-4 space-y-2" aria-label="Current assignments">
-                  {taskAssignments.map((a) => {
-                    const member = teamMembers.find((m) => m.id === a.memberId)
-                    return (
-                      <li key={a.id} className="flex items-center gap-2 rounded-md border px-3 py-2">
-                        <span className="flex-1 text-sm font-medium">{member?.name ?? 'Unknown'}</span>
-                        <Badge variant="outline" className="text-xs font-normal">{a.hoursAllocated}h</Badge>
-                        {canManage && (
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="icon"
-                            className="h-7 w-7 text-muted-foreground hover:text-destructive"
-                            onClick={() => handleRemoveAssignment(a.id)}
-                            aria-label={`Remove ${member?.name ?? 'assignment'}`}
-                          >
-                            <X className="h-3.5 w-3.5" aria-hidden="true" />
-                          </Button>
-                        )}
-                      </li>
-                    )
-                  })}
-                </ul>
-              )}
-
-              {/* Add assignment form */}
-              {canManage && availableMembers.length > 0 && (
-                <div className="space-y-3">
-                  {/* Over-allocation warning */}
-                  {isOverAllocWarning && (
-                    <div
-                      role="alert"
-                      className="flex items-start gap-2 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-800"
-                    >
-                      <TriangleAlert className="mt-0.5 h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-                      <span>
-                        This will push {projectedMember?.name} above 110% utilization.
-                        You can still add the assignment.
-                      </span>
-                    </div>
-                  )}
-
-                  <div className="flex items-start gap-2">
-                    <div className="flex-1">
-                      <Label htmlFor="assign-member" className="sr-only">Team member</Label>
-                      <Select value={newAssignMemberId} onValueChange={setNewAssignMemberId}>
-                        <SelectTrigger id="assign-member" className="h-9 text-sm">
-                          <SelectValue placeholder="Select member…" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {availableMembers.map((m) => (
-                            <SelectItem key={m.id} value={m.id}>{m.name}</SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div className="w-20">
-                      <Label htmlFor="assign-hours" className="sr-only">Hours</Label>
-                      <Input
-                        id="assign-hours"
-                        type="number"
-                        min={1}
-                        max={999}
-                        step={1}
-                        placeholder="hrs"
-                        value={newAssignHours}
-                        onChange={(e) => setNewAssignHours(e.target.value)}
-                        className="h-9 text-sm"
-                        aria-label="Hours allocated"
-                      />
-                    </div>
-                    <Button
-                      type="button"
-                      size="sm"
-                      className="h-9"
-                      onClick={handleAddAssignment}
-                    >
-                      Add
-                    </Button>
-                  </div>
-
-                  {assignError && (
-                    <p className="text-xs text-destructive" role="alert">{assignError}</p>
-                  )}
-                </div>
-              )}
-
-              {canManage && availableMembers.length === 0 && taskAssignments.length > 0 && (
-                <p className="text-xs text-muted-foreground">All team members are already assigned.</p>
-              )}
-            </section>
-          </>
-        ) : (
-          <>
-            <Separator className="my-6" />
-            <p className="text-xs text-muted-foreground">
-              Save this task first to add team assignments.
-            </p>
-          </>
         )}
-      </SheetContent>
-    </Sheet>
+      </DialogContent>
+    </Dialog>
   )
 }
