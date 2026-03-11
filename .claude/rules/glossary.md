@@ -10,7 +10,7 @@ Project-specific terminology for the IT Capacity Planning Tool.
 |------|------------|
 | admin | Full access: manage users, all projects, all team members, all reports |
 | planner | Can create/edit projects, tasks, assignments, and team members. Cannot manage user accounts |
-| viewer | Read-only. Can see all dashboards and reports. Linked to a TeamMember via `teamMemberId` |
+| viewer | Read-only. Can see all dashboards and reports. Linked to a TeamMember via `teamMemberId`. **Viewers must never be assigned to tasks** — enforce via `canBeAssigned()` in `rbac.ts` |
 
 ## Domain Terms
 
