@@ -13,7 +13,8 @@ describe('QA Checklist - Dashboard', () => {
 
   it('shows stat cards with non-zero numbers from seed data', () => {
     const mockNavigate = () => {}
-    render(<DashboardView onNavigate={mockNavigate} />)
+    const mockNavigateToProjects = () => {}
+    render(<DashboardView onNavigate={mockNavigate} onNavigateToProjects={mockNavigateToProjects} />)
     
     // Check that all stat cards are present and have values > 0
     expect(screen.getByText('Projects')).toBeInTheDocument()
@@ -24,7 +25,8 @@ describe('QA Checklist - Dashboard', () => {
 
   it('shows Blocked Tasks card in red when count > 0', () => {
     const mockNavigate = () => {}
-    render(<DashboardView onNavigate={mockNavigate} />)
+    const mockNavigateToProjects = () => {}
+    render(<DashboardView onNavigate={mockNavigate} onNavigateToProjects={mockNavigateToProjects} />)
     
     // Find the blocked tasks value - it should have text-destructive class when > 0
     const blockedTasksCard = screen.getByText('Blocked Tasks').closest('.border-l-4')
